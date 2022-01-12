@@ -2,7 +2,13 @@ cmake_minimum_required(VERSION 3.14)
 set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "")
 set(CMAKE_DEBUG_POSTFIX "-d")
 
-project(dyvk)
+
+# project parameters
+set(project_name dyvk)
+set(${project_name}_version ${build_version})
+
+project(${project_name} VERSION "${${project_name}_version}")
+set(${project_name}_soversion ${PROJECT_VERSION_MAJOR})
 
 # cmake-utils
 include(FetchContent)
@@ -15,8 +21,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(cmake-utils)
 FetchContent_GetProperties(cmake-utils)
 
-set(${PROJECT_NAME}_version 1.0.0)
-set(${PROJECT_NAME}_soversion 1)
+set(${PROJECT_NAME}_soversion ${PROJECT_VERSION_MAJOR})
 add_library(${PROJECT_NAME})
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 set_property(TARGET ${PROJECT_NAME} PROPERTY VERSION ${${PROJECT_NAME}_version})
@@ -38,9 +43,11 @@ target_sources(${PROJECT_NAME} PRIVATE
 get_target_property(sources ${PROJECT_NAME} SOURCES)
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 
-include("${cmake-utils_SOURCE_DIR}/cmake-utils.cmake")
-install(DIRECTORY include/
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  FILES_MATCHING PATTERN "*.h*"
-)
-install_and_export_target(TARGET ${PROJECT_NAME})
+if(DYVK_INSTALL)
+  include("${cmake-utils_SOURCE_DIR}/cmake-utils.cmake")
+  install(DIRECTORY include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.h*"
+  )
+  install_and_export_target(TARGET ${PROJECT_NAME})
+endif()
