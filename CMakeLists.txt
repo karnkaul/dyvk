@@ -5,7 +5,7 @@ set(CMAKE_DEBUG_POSTFIX "-d")
 
 # project parameters
 set(project_name dyvk)
-set(${project_name}_version ${build_version})
+set(${project_name}_version 1.0.1)
 
 project(${project_name} VERSION "${${project_name}_version}")
 set(${project_name}_soversion ${PROJECT_VERSION_MAJOR})
@@ -33,6 +33,9 @@ target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
+if(CMAKE_SYSTEM_NAME STREQUAL Linux)
+  target_link_libraries(${PROJECT_NAME} PRIVATE dl)
+endif()
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC VK_NO_PROTOTYPES)
 target_sources(${PROJECT_NAME} PRIVATE 
