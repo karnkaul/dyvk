@@ -4,7 +4,7 @@ set(CMAKE_DEBUG_POSTFIX "-d")
 
 # project parameters
 set(project_name dyvk)
-set(${project_name}_version 1.1.0)
+set(${project_name}_version 1.3.257)
 
 project(${project_name} VERSION "${${project_name}_version}")
 set(${project_name}_soversion ${PROJECT_VERSION_MAJOR})
