@@ -4,24 +4,12 @@ set(CMAKE_DEBUG_POSTFIX "-d")
 
 # project parameters
 set(project_name dyvk)
-set(${project_name}_version 1.3.257)
+set(${project_name}_version 1.3.272)
 
 project(${project_name} VERSION "${${project_name}_version}")
 set(${project_name}_soversion ${PROJECT_VERSION_MAJOR})
 
-option(DYVK_INSTALL "Install dyvk" ON)
 option(DYVK_VK_BETA "Enable VK_ENABLE_BETA_EXTENSIONS" ON)
-
-# cmake-utils
-include(FetchContent)
-set(FETCHCONTENT_QUIET OFF)
-FetchContent_Declare(
-  cmake-utils
-  GIT_REPOSITORY https://github.com/karnkaul/cmake-utils
-  GIT_TAG v1.0.1
-)
-FetchContent_MakeAvailable(cmake-utils)
-FetchContent_GetProperties(cmake-utils)
 
 set(${PROJECT_NAME}_soversion ${PROJECT_VERSION_MAJOR})
 add_library(${PROJECT_NAME})
@@ -51,12 +39,3 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 get_target_property(sources ${PROJECT_NAME} SOURCES)
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
-
-if(DYVK_INSTALL)
-  include("${cmake-utils_SOURCE_DIR}/cmake-utils.cmake")
-  install(DIRECTORY include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    FILES_MATCHING PATTERN "*.h*"
-  )
-  install_and_export_target(TARGET ${PROJECT_NAME})
-endif()
